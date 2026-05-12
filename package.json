@@ -1,5 +1,5 @@
 {
-  "name": "agent-setup",
+  "name": "@latentevals/agent-setup",
   "version": "0.1.0-alpha.0",
   "description": "One declarative source of truth for the skills, MCP servers, and instructions you want every AI coding agent to use.",
   "license": "MIT",
@@ -14,7 +14,7 @@
   },
   "type": "module",
   "bin": {
-    "agent-setup": "./dist/cli.js"
+    "agent-setup": "dist/cli.js"
   },
   "engines": {
     "node": ">=20.0.0"

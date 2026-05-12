@@ -45,7 +45,7 @@ Idempotent. Re-running with no changes produces no diff.
 
 ```bash
 # In any project (with .agents/, .claude/, or empty):
-npx agent-setup
+npx @latentevals/agent-setup
 ```
 
 When stdin is a TTY, the tool detects your installed agents and walks you through which skills and MCPs to enable before writing per-tool configs. In CI or any non-TTY context, pass `--yes` to confirm defaults non-interactively (without `--yes`, non-TTY runs exit with an error pointing at the flag).
@@ -57,8 +57,8 @@ When stdin is a TTY, the tool detects your installed agents and walks you throug
 ### 1. Install from a repo
 
 ```bash
-npx agent-setup install --repo latentevals/agent-setup            # all skills + mcps
-npx agent-setup install --repo latentevals/agent-setup --type=mcp # only mcps
+npx @latentevals/agent-setup install --repo latentevals/agent-setup            # all skills + mcps
+npx @latentevals/agent-setup install --repo latentevals/agent-setup --type=mcp # only mcps
 ```
 
 `--repo` accepts:
@@ -79,14 +79,14 @@ Omit `--repo` and it defaults to `.` (the current directory). So `install` with 
 ### 2. Cloned a repo with `.agents/`
 
 ```bash
-npx agent-setup                  # link to this project (project scope)
-npx agent-setup install --global # link globally for all projects on this machine
+npx @latentevals/agent-setup                  # link to this project (project scope)
+npx @latentevals/agent-setup install --global # link globally for all projects on this machine
 ```
 
 ### 3. Cloned a repo with only `.claude/`
 
 ```bash
-npx agent-setup
+npx @latentevals/agent-setup
 ```
 
 Same command. `agent-setup` falls back to `.claude/skills/` and `.mcp.json` as the source-of-truth when `.agents/` isn't present, then writes equivalent configs for Cursor, Codex, Gemini, OpenCode.
