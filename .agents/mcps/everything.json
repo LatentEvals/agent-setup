@@ -1,0 +1,10 @@
+{
+  "name": "everything",
+  "description": "Reference MCP server from the Model Context Protocol team that exercises every part of the protocol — prompts, resources, tools, sampling. Useful as a working demo and for adapter testing.",
+  "command": "npx",
+  "args": ["-y", "@modelcontextprotocol/server-everything"],
+  "tags": ["demo", "reference", "mcp"],
+  "homepage": "https://github.com/modelcontextprotocol/servers/tree/main/src/everything",
+  "repository": "https://github.com/modelcontextprotocol/servers",
+  "license": "MIT"
+}
