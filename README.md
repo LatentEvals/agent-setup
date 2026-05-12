@@ -97,7 +97,7 @@ Source-fallback priority in v0.1: `.agents/` → `.claude/` (with `.mcp.json`). 
 
 ## Commands
 
-Two verbs, one mental model.
+Three verbs, one mental model.
 
 | Command | What it does |
 | --- | --- |
@@ -105,18 +105,49 @@ Two verbs, one mental model.
 | `agent-setup install` | Read source (`--repo` or default `.`), copy into `.agents/` if remote, link into detected agents |
 | `agent-setup uninstall <name>` | Delete `.agents/skills/<name>/` and `.agents/mcps/<name>.json` from the source, then run install so the orphan-sweep clears per-tool entries |
 | `agent-setup uninstall --all` | Reconcile against an empty canonical so the orphan-sweep removes everything the lockfile owns; `.agents/` itself is untouched |
+| `agent-setup import` | Scan each harness's skill directory (`.claude/skills/`, `.cursor/skills/`, `.gemini/skills/`, `.codex/skills/`, `.opencode/skills/`) and copy SKILL.md skills into `.agents/skills/`. Run `install` after to propagate to the other tools. |
+
+### `import` in detail
+
+`import` is the inverse of `install`: it pulls skills *out of* per-tool dirs *into* the canonical `.agents/skills/`. Useful when you already have skills in a single harness and want them everywhere.
+
+```bash
+# Scan all five harnesses at project scope, copy non-conflicting skills
+npx @latentevals/agent-setup import
+
+# Only look at one harness
+npx @latentevals/agent-setup import --from cursor
+
+# Scan global locations (~/.claude/skills/, ~/.cursor/skills/, …)
+npx @latentevals/agent-setup import --global
+
+# Preview without writing
+npx @latentevals/agent-setup import --dry-run
+```
+
+Decision logic per skill name found:
+
+- **Found in one source, not yet in `.agents/`** → copy
+- **Found in multiple sources with identical content** → copy once, note all sources
+- **Found in multiple sources with differing content** → skip with conflict message; re-run with `--from <tool>` to disambiguate
+- **Already in `.agents/`, source matches** → silent no-op
+- **Already in `.agents/`, source differs** → skip unless `--force`
+- **Source is a symlink resolving into `.agents/skills/`** (e.g., one we created during a previous `install`) → silent no-op
+
+`import` never writes to per-tool config or the lockfile. After running `import`, run `install` to propagate the imported skills out to the other harnesses.
 
 ### Common flags
 
 | Flag | Default | Purpose |
 | --- | --- | --- |
 | `--repo <source>` | `.` | source for `install` (local path or remote URL) |
-| `--type=skill\|mcp` | both | narrow to one type |
-| `--project` | (default) | scope: write to project paths |
-| `--global` | | scope: write to user-home paths (mutually exclusive with `--project`) |
-| `--tool=claude,codex,…` | all detected | limit which adapters to write |
+| `--type=skill\|mcp` | both | narrow to one type [`install`/`uninstall`] |
+| `--from=<tool>` | (all) | limit `import` scan to one harness (`claude\|codex\|cursor\|gemini\|opencode`) |
+| `--project` | (default) | scope: read/write project paths |
+| `--global` | | scope: read/write user-home paths (mutually exclusive with `--project`) |
+| `--tool=claude,codex,…` | all detected | limit which adapters `install` writes |
 | `--dry-run` | | preview without writing |
-| `--force` | | bypass marker checks + materialize-conflict checks |
+| `--force` | | bypass marker checks (`install`); overwrite existing `.agents/skills/<name>/` and resolve cross-source conflicts (`import`) |
 | `--yes` / `-y` | | skip prompts; required when stdin is not a TTY |
 | `--version` / `-v` | | print version |
 | `--help` / `-h` | | print help |

@@ -82,7 +82,7 @@ function normalizeSkillFrontmatter(
   return SkillSchema.parse(skill);
 }
 
-async function loadSkillFromDir(skillDir: string): Promise<Skill | null> {
+export async function loadSkillFromDir(skillDir: string): Promise<Skill | null> {
   const skillMd = path.join(skillDir, "SKILL.md");
   const text = await readFileOrNull(skillMd);
   if (text === null) return null;
@@ -110,7 +110,7 @@ async function loadSkillFromDir(skillDir: string): Promise<Skill | null> {
   }
 }
 
-async function loadSkillsFromSkillsDir(skillsDir: string): Promise<Skill[]> {
+export async function loadSkillsFromSkillsDir(skillsDir: string): Promise<Skill[]> {
   const entries = await readDirSafe(skillsDir);
   const skills: Skill[] = [];
   for (const entry of entries) {

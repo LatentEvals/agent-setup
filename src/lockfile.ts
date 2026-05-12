@@ -44,7 +44,7 @@ export function lockfilePath(scope: Scope, root: string): string {
   return path.join(homedir(), ".agents", ".lock.json");
 }
 
-export function emptyLockfile(generator = "agent-setup@0.1.0-alpha.0"): Lockfile {
+export function emptyLockfile(generator = "agent-setup@0.1.0-alpha.1"): Lockfile {
   return {
     version: 1,
     generator,
@@ -127,7 +127,7 @@ function coerceLockfile(raw: unknown, generator: string): Lockfile {
 export async function readLockfile(
   scope: Scope,
   root: string,
-  generator = "agent-setup@0.1.0-alpha.0",
+  generator = "agent-setup@0.1.0-alpha.1",
 ): Promise<Lockfile> {
   const file = lockfilePath(scope, root);
   let text: string;

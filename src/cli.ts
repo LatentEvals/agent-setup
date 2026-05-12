@@ -24,10 +24,12 @@ import { readFileSync } from "node:fs";
 
 import { runInstall, formatInstallSummary, type TypeFilter } from "./install.js";
 import { runUninstall } from "./uninstall.js";
+import { runImport, formatImportSummary } from "./import.js";
+import { isTool, type Tool } from "./import-sources.js";
 import { runInteractiveInstall } from "./ui/flow.js";
 import type { Scope } from "./types.js";
 
-type Verb = "install" | "uninstall";
+type Verb = "install" | "uninstall" | "import";
 
 type ParsedArgs = {
   verb: Verb;
@@ -36,6 +38,7 @@ type ParsedArgs = {
   scope: Scope;
   scopeExplicit: boolean;
   tool: string[] | null;
+  from: Tool | null;
   repo: string;
   dryRun: boolean;
   force: boolean;
@@ -63,6 +66,7 @@ Usage:
   agent-setup [install] [options]
   agent-setup uninstall <name> [options]
   agent-setup uninstall --all [options]
+  agent-setup import [options]
 
 Commands:
   install                Read source and link into detected agents (default).
@@ -70,15 +74,19 @@ Commands:
   uninstall <name>       Delete <name> from .agents/ and sweep per-tool entries.
                          Non-interactive in v0.1 — requires <name> or --all.
   uninstall --all        Sweep every entry the lockfile owns; preserve .agents/.
+  import                 Scan harness skill dirs and copy SKILL.md skills into
+                         .agents/skills/. Run \`install\` after to propagate.
 
 Options:
-  --repo <source>        Source path or remote URL (default: ".").
-  --type=skill|mcp       Narrow to one type (default: both).
+  --repo <source>        Source path or remote URL (default: ".") [install].
+  --type=skill|mcp       Narrow to one type (default: both) [install|uninstall].
   --project              Project scope (default).
   --global               User-home scope.
-  --tool=<a,b,...>       Comma-separated allowlist of adapters.
+  --tool=<a,b,...>       Comma-separated allowlist of adapters [install|uninstall].
+  --from=<tool>          Limit \`import\` to one harness (claude|codex|cursor|gemini|opencode).
   --dry-run              Preview without writing.
-  --force                Bypass marker checks (overwrite hand-written files).
+  --force                Bypass marker checks (install); overwrite existing
+                         and resolve cross-source conflicts (import).
   --yes, -y              Skip prompts (required for non-interactive runs).
   --version, -v          Print version.
   --help, -h             Show this help.
@@ -94,6 +102,7 @@ function parseArgs(argv: string[]): ParsedArgs | ParseError {
     scope: "project",
     scopeExplicit: false,
     tool: null,
+    from: null,
     repo: ".",
     dryRun: false,
     force: false,
@@ -105,7 +114,11 @@ function parseArgs(argv: string[]): ParsedArgs | ParseError {
 
   // First pass: detect verb if first non-flag token is a known verb.
   let i = 0;
-  if (argv[0] === "install" || argv[0] === "uninstall") {
+  if (
+    argv[0] === "install" ||
+    argv[0] === "uninstall" ||
+    argv[0] === "import"
+  ) {
     out.verb = argv[0] as Verb;
     i = 1;
   }
@@ -202,6 +215,27 @@ function parseArgs(argv: string[]): ParsedArgs | ParseError {
       i++;
       continue;
     }
+    if (a.startsWith("--from=")) {
+      const v = a.slice("--from=".length);
+      if (!isTool(v)) {
+        return {
+          error: `--from must be one of claude|codex|cursor|gemini|opencode (got "${v}")`,
+        };
+      }
+      out.from = v;
+      continue;
+    }
+    if (a === "--from") {
+      const next = argv[i + 1];
+      if (next === undefined || !isTool(next)) {
+        return {
+          error: `--from must be one of claude|codex|cursor|gemini|opencode`,
+        };
+      }
+      out.from = next;
+      i++;
+      continue;
+    }
     // Unknown flag.
     if (a.startsWith("-")) {
       return { error: `unknown flag: ${a} (try --help)` };
@@ -242,6 +276,21 @@ export async function main(argv: string[]): Promise<number> {
   const cwd = process.cwd();
   const tty = isTty();
   const interactive = parsed.verb === "install" && tty && !parsed.yes;
+
+  if (parsed.verb === "import") {
+    const result = await runImport({
+      cwd,
+      scope: parsed.scope,
+      from: parsed.from ?? undefined,
+      dryRun: parsed.dryRun,
+      force: parsed.force,
+    });
+    process.stdout.write(formatImportSummary(result, parsed.dryRun));
+    // Nonzero exit only if zero imported AND there was a resolvable conflict.
+    const hadConflict = result.actions.some((a) => a.kind === "skip-conflict");
+    if (result.imported.length === 0 && hadConflict) return 1;
+    return 0;
+  }
 
   if (parsed.verb === "install") {
     if (interactive) {
