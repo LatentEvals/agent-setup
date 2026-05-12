@@ -51,5 +51,6 @@ export function makeInput(
     agentsMd: "# AGENTS\n\nBe helpful.\n",
     scope,
     root,
+    xdgConfigHome: `${root}/.config`,
   };
 }

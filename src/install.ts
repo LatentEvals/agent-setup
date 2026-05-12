@@ -97,6 +97,11 @@ function filterServersByTarget(servers: Server[], emitterName: string): Server[]
   });
 }
 
+function resolveXdgConfigHome(root: string): string {
+  const xdg = process.env["XDG_CONFIG_HOME"];
+  return xdg && xdg.length > 0 ? xdg : path.join(root, ".config");
+}
+
 function pickEmitters(
   allowed: string[] | null,
 ): Emitter[] {
@@ -202,6 +207,7 @@ export async function runInstall(opts: InstallOptions): Promise<InstallResult> {
       agentsMd: canonical.agentsMd,
       scope: opts.scope,
       root: targetRoot,
+      xdgConfigHome: resolveXdgConfigHome(targetRoot),
     };
     const out = emitter.emit(input);
     for (const ch of out) {

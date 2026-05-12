@@ -37,6 +37,8 @@ export type EmitInput = {
   agentsMd: string | null;
   scope: Scope;
   root: string;
+  /** Resolved XDG_CONFIG_HOME, or `${root}/.config` if unset. Computed by caller. */
+  xdgConfigHome: string;
 };
 
 export type Emitter = {

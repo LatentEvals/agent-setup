@@ -43,17 +43,12 @@ function buildEntry(server: Server): Record<string, unknown> {
   return {};
 }
 
-function xdgConfigHome(root: string): string {
-  const xdg = process.env["XDG_CONFIG_HOME"];
-  return xdg && xdg.length > 0 ? xdg : path.join(root, ".config");
-}
-
 function emit(input: EmitInput): DesiredChange[] {
   const changes: DesiredChange[] = [];
   const file =
     input.scope === "project"
       ? path.join(input.root, "opencode.json")
-      : path.join(xdgConfigHome(input.root), "opencode", "opencode.json");
+      : path.join(input.xdgConfigHome, "opencode", "opencode.json");
 
   for (const server of input.servers) {
     changes.push({
