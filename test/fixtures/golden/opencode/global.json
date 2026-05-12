@@ -1,7 +1,7 @@
 [
   {
     "kind": "json-entry",
-    "path": "/Users/montanaflynn/.config/opencode/opencode.json",
+    "path": "/home/u/.config/opencode/opencode.json",
     "pointer": "mcp.neon",
     "value": {
       "type": "remote",
@@ -14,7 +14,7 @@
   },
   {
     "kind": "json-entry",
-    "path": "/Users/montanaflynn/.config/opencode/opencode.json",
+    "path": "/home/u/.config/opencode/opencode.json",
     "pointer": "mcp.posthog",
     "value": {
       "type": "remote",

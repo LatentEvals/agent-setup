@@ -1,7 +1,7 @@
 [
   {
     "kind": "json-entry",
-    "path": "/Users/montanaflynn/.cursor/mcp.json",
+    "path": "/home/u/.cursor/mcp.json",
     "pointer": "mcpServers.neon",
     "value": {
       "url": "https://mcp.neon.tech/sse",
@@ -13,7 +13,7 @@
   },
   {
     "kind": "json-entry",
-    "path": "/Users/montanaflynn/.cursor/mcp.json",
+    "path": "/home/u/.cursor/mcp.json",
     "pointer": "mcpServers.posthog",
     "value": {
       "url": "https://mcp.posthog.com/sse"

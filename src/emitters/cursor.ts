@@ -2,7 +2,6 @@
 // ~/.cursor/mcp.json (global), key mcpServers.<name>.
 // Skills are native (v2.4+). No AGENTS output (native).
 
-import { homedir } from "node:os";
 import path from "node:path";
 
 import { detectCursor } from "../detect.js";
@@ -32,10 +31,7 @@ function buildEntry(server: Server): Record<string, unknown> {
 
 function emit(input: EmitInput): DesiredChange[] {
   const changes: DesiredChange[] = [];
-  const file =
-    input.scope === "project"
-      ? path.join(input.root, ".cursor", "mcp.json")
-      : path.join(homedir(), ".cursor", "mcp.json");
+  const file = path.join(input.root, ".cursor", "mcp.json");
 
   for (const server of input.servers) {
     changes.push({

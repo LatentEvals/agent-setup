@@ -10,7 +10,6 @@
 //             .mcp.json (project) | ~/.claude.json (global).
 // - AGENTS: text-file CLAUDE.md = "@AGENTS.md\n" (project only).
 
-import { homedir } from "node:os";
 import path from "node:path";
 
 import { detectClaude } from "../detect.js";
@@ -47,7 +46,7 @@ function emit(input: EmitInput): DesiredChange[] {
   // mcp file path
   const mcpFile = isProject
     ? path.join(input.root, ".mcp.json")
-    : path.join(homedir(), ".claude.json");
+    : path.join(input.root, ".claude.json");
 
   for (const server of input.servers) {
     changes.push({
@@ -60,12 +59,8 @@ function emit(input: EmitInput): DesiredChange[] {
   }
 
   // skills as symlinks
-  const skillsRoot = isProject
-    ? path.join(input.root, ".claude", "skills")
-    : path.join(homedir(), ".claude", "skills");
-  const agentsSkillsRoot = isProject
-    ? path.join(input.root, ".agents", "skills")
-    : path.join(homedir(), ".agents", "skills");
+  const skillsRoot = path.join(input.root, ".claude", "skills");
+  const agentsSkillsRoot = path.join(input.root, ".agents", "skills");
 
   for (const skill of input.skills) {
     changes.push({

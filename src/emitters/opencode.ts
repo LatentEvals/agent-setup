@@ -8,7 +8,6 @@
 //
 // Auth syntax: `{env:VAR}` (no $).
 
-import { homedir } from "node:os";
 import path from "node:path";
 
 import { detectOpencode } from "../detect.js";
@@ -44,9 +43,9 @@ function buildEntry(server: Server): Record<string, unknown> {
   return {};
 }
 
-function xdgConfigHome(): string {
+function xdgConfigHome(root: string): string {
   const xdg = process.env["XDG_CONFIG_HOME"];
-  return xdg && xdg.length > 0 ? xdg : path.join(homedir(), ".config");
+  return xdg && xdg.length > 0 ? xdg : path.join(root, ".config");
 }
 
 function emit(input: EmitInput): DesiredChange[] {
@@ -54,7 +53,7 @@ function emit(input: EmitInput): DesiredChange[] {
   const file =
     input.scope === "project"
       ? path.join(input.root, "opencode.json")
-      : path.join(xdgConfigHome(), "opencode", "opencode.json");
+      : path.join(xdgConfigHome(input.root), "opencode", "opencode.json");
 
   for (const server of input.servers) {
     changes.push({

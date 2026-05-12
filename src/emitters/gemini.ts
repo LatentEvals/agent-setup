@@ -5,7 +5,6 @@
 // it to a different value (the emitter is pure and always declares the
 // desire). No skills emit.
 
-import { homedir } from "node:os";
 import path from "node:path";
 
 import { detectGemini } from "../detect.js";
@@ -38,10 +37,7 @@ function buildEntry(server: Server): Record<string, unknown> {
 
 function emit(input: EmitInput): DesiredChange[] {
   const changes: DesiredChange[] = [];
-  const file =
-    input.scope === "project"
-      ? path.join(input.root, ".gemini", "settings.json")
-      : path.join(homedir(), ".gemini", "settings.json");
+  const file = path.join(input.root, ".gemini", "settings.json");
 
   for (const server of input.servers) {
     changes.push({

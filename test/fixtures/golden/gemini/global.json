@@ -1,7 +1,7 @@
 [
   {
     "kind": "json-entry",
-    "path": "/Users/montanaflynn/.gemini/settings.json",
+    "path": "/home/u/.gemini/settings.json",
     "pointer": "mcpServers.neon",
     "value": {
       "httpUrl": "https://mcp.neon.tech/sse",
@@ -13,7 +13,7 @@
   },
   {
     "kind": "json-entry",
-    "path": "/Users/montanaflynn/.gemini/settings.json",
+    "path": "/home/u/.gemini/settings.json",
     "pointer": "mcpServers.posthog",
     "value": {
       "httpUrl": "https://mcp.posthog.com/sse"
@@ -22,7 +22,7 @@
   },
   {
     "kind": "json-entry",
-    "path": "/Users/montanaflynn/.gemini/settings.json",
+    "path": "/home/u/.gemini/settings.json",
     "pointer": "context.fileName",
     "value": "AGENTS.md",
     "ownerKey": "context.fileName"

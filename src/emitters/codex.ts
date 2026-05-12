@@ -2,7 +2,6 @@
 // ~/.codex/config.toml (global), key mcp_servers.<name>.
 // No skills/AGENTS output: codex reads .agents/skills/ and AGENTS.md natively.
 
-import { homedir } from "node:os";
 import path from "node:path";
 
 import { detectCodex } from "../detect.js";
@@ -34,10 +33,7 @@ function buildEntry(server: Server): Record<string, unknown> {
 
 function emit(input: EmitInput): DesiredChange[] {
   const changes: DesiredChange[] = [];
-  const tomlFile =
-    input.scope === "project"
-      ? path.join(input.root, ".codex", "config.toml")
-      : path.join(homedir(), ".codex", "config.toml");
+  const tomlFile = path.join(input.root, ".codex", "config.toml");
 
   for (const server of input.servers) {
     changes.push({

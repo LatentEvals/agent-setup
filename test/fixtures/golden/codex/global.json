@@ -1,7 +1,7 @@
 [
   {
     "kind": "toml-entry",
-    "path": "/Users/montanaflynn/.codex/config.toml",
+    "path": "/home/u/.codex/config.toml",
     "pointer": "mcp_servers.neon",
     "value": {
       "url": "https://mcp.neon.tech/sse",
@@ -11,7 +11,7 @@
   },
   {
     "kind": "toml-entry",
-    "path": "/Users/montanaflynn/.codex/config.toml",
+    "path": "/home/u/.codex/config.toml",
     "pointer": "mcp_servers.posthog",
     "value": {
       "url": "https://mcp.posthog.com/sse"

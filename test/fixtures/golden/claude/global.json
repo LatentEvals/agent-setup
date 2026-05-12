@@ -1,7 +1,7 @@
 [
   {
     "kind": "json-entry",
-    "path": "/Users/montanaflynn/.claude.json",
+    "path": "/home/u/.claude.json",
     "pointer": "mcpServers.neon",
     "value": {
       "url": "https://mcp.neon.tech/sse",
@@ -13,7 +13,7 @@
   },
   {
     "kind": "json-entry",
-    "path": "/Users/montanaflynn/.claude.json",
+    "path": "/home/u/.claude.json",
     "pointer": "mcpServers.posthog",
     "value": {
       "url": "https://mcp.posthog.com/sse"
@@ -22,12 +22,12 @@
   },
   {
     "kind": "symlink",
-    "link": "/Users/montanaflynn/.claude/skills/hello",
-    "target": "/Users/montanaflynn/.agents/skills/hello"
+    "link": "/home/u/.claude/skills/hello",
+    "target": "/home/u/.agents/skills/hello"
   },
   {
     "kind": "symlink",
-    "link": "/Users/montanaflynn/.claude/skills/world",
-    "target": "/Users/montanaflynn/.agents/skills/world"
+    "link": "/home/u/.claude/skills/world",
+    "target": "/home/u/.agents/skills/world"
   }
 ]
