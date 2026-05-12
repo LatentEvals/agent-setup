@@ -1,0 +1,16 @@
+{
+  "$schema": "./mcp.schema.json",
+  "_doc": "Legacy single-file MCP registry — used by older repos that predate `.agents/mcps/<name>.json`.",
+  "servers": {
+    "shadcn": {
+      "description": "shadcn registry — component docs and add commands",
+      "command": "npx",
+      "args": ["shadcn@latest", "mcp"]
+    },
+    "create-webapp": {
+      "description": "This app's own MCP server (notes + tags). Uses OAuth.",
+      "url": "http://localhost:3000/api/mcp",
+      "auth": "oauth"
+    }
+  }
+}

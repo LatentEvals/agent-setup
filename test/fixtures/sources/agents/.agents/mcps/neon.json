@@ -1,0 +1,7 @@
+{
+  "name": "neon",
+  "description": "Neon Postgres MCP server",
+  "url": "https://mcp.neon.tech/sse",
+  "auth": "bearer",
+  "bearerEnvVar": "NEON_API_KEY"
+}

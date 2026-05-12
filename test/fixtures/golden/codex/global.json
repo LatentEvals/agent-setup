@@ -1,0 +1,21 @@
+[
+  {
+    "kind": "toml-entry",
+    "path": "/Users/montanaflynn/.codex/config.toml",
+    "pointer": "mcp_servers.neon",
+    "value": {
+      "url": "https://mcp.neon.tech/sse",
+      "bearer_token_env_var": "NEON_API_KEY"
+    },
+    "ownerKey": "mcp_servers.neon"
+  },
+  {
+    "kind": "toml-entry",
+    "path": "/Users/montanaflynn/.codex/config.toml",
+    "pointer": "mcp_servers.posthog",
+    "value": {
+      "url": "https://mcp.posthog.com/sse"
+    },
+    "ownerKey": "mcp_servers.posthog"
+  }
+]

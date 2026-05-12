@@ -1,0 +1,25 @@
+[
+  {
+    "kind": "json-entry",
+    "path": "/Users/montanaflynn/.config/opencode/opencode.json",
+    "pointer": "mcp.neon",
+    "value": {
+      "type": "remote",
+      "url": "https://mcp.neon.tech/sse",
+      "headers": {
+        "Authorization": "Bearer {env:NEON_API_KEY}"
+      }
+    },
+    "ownerKey": "mcp.neon"
+  },
+  {
+    "kind": "json-entry",
+    "path": "/Users/montanaflynn/.config/opencode/opencode.json",
+    "pointer": "mcp.posthog",
+    "value": {
+      "type": "remote",
+      "url": "https://mcp.posthog.com/sse"
+    },
+    "ownerKey": "mcp.posthog"
+  }
+]

@@ -1,0 +1,30 @@
+[
+  {
+    "kind": "json-entry",
+    "path": "/proj/.gemini/settings.json",
+    "pointer": "mcpServers.neon",
+    "value": {
+      "httpUrl": "https://mcp.neon.tech/sse",
+      "headers": {
+        "Authorization": "Bearer ${NEON_API_KEY}"
+      }
+    },
+    "ownerKey": "mcpServers.neon"
+  },
+  {
+    "kind": "json-entry",
+    "path": "/proj/.gemini/settings.json",
+    "pointer": "mcpServers.posthog",
+    "value": {
+      "httpUrl": "https://mcp.posthog.com/sse"
+    },
+    "ownerKey": "mcpServers.posthog"
+  },
+  {
+    "kind": "json-entry",
+    "path": "/proj/.gemini/settings.json",
+    "pointer": "context.fileName",
+    "value": "AGENTS.md",
+    "ownerKey": "context.fileName"
+  }
+]

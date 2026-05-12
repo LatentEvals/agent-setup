@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "neon": {
+      "url": "https://mcp.neon.tech/sse",
+      "headers": {
+        "Authorization": "Bearer ${NEON_API_KEY}"
+      }
+    },
+    "local-tool": {
+      "command": "npx",
+      "args": ["@example/some-mcp@latest"],
+      "env": {
+        "EXAMPLE_FLAG": "1"
+      }
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "name": "local-tool",
+  "description": "A stdio MCP with no auth",
+  "command": "npx",
+  "args": ["@example/some-mcp@latest"],
+  "env": {
+    "EXAMPLE_FLAG": "1"
+  }
+}
