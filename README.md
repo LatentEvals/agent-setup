@@ -460,4 +460,4 @@ Architecture map:
 - `src/cli.ts` — argv parser + dispatch
 - `src/repo.ts` + `src/git.ts` — `--repo` resolution and remote materialization
 
-Test suite: `vitest run` (tested on Node 18 + 20 in CI; see `.github/workflows/`).
+Test suite: `vitest run` (tested on Node 20 + 22 in CI; see `.github/workflows/`).

@@ -17,7 +17,7 @@
     "agent-setup": "./dist/cli.js"
   },
   "engines": {
-    "node": ">=18.17"
+    "node": ">=20.0.0"
   },
   "files": [
     "dist",
