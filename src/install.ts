@@ -121,7 +121,7 @@ async function detectInstalled(
 }
 
 export async function runInstall(opts: InstallOptions): Promise<InstallResult> {
-  const generator = opts.generator ?? "agent-setup@0.1.0-alpha.2";
+  const generator = opts.generator ?? "agent-setup@0.1.0-alpha.3";
 
   // Resolve --repo (may trigger a remote shallow-clone + materialize step).
   // For remote refs we materialize into <projectRoot>/.agents and then
