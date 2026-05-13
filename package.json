@@ -1,6 +1,6 @@
 {
   "name": "@latentevals/agent-setup",
-  "version": "0.1.0-alpha.1",
+  "version": "0.1.0-alpha.2",
   "description": "One declarative source of truth for the skills, MCP servers, and instructions you want every AI coding agent to use.",
   "license": "MIT",
   "author": "Montana Flynn",

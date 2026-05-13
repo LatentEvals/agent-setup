@@ -109,32 +109,52 @@ Three verbs, one mental model.
 
 ### `import` in detail
 
-`import` is the inverse of `install`: it pulls skills *out of* per-tool dirs *into* the canonical `.agents/skills/`. Useful when you already have skills in a single harness and want them everywhere.
+`import` is the inverse of `install`: it pulls skills and MCP server configs *out of* per-tool dirs *into* the canonical `.agents/`. Useful when you already have setup in a single harness and want it everywhere.
 
 ```bash
-# Scan all five harnesses at project scope, copy non-conflicting skills
+# Scan all five harnesses at project scope, copy non-conflicting skills + mcps
 npx @latentevals/agent-setup import
 
 # Only look at one harness
 npx @latentevals/agent-setup import --from cursor
 
-# Scan global locations (~/.claude/skills/, ~/.cursor/skills/, …)
+# Only import skills (or only mcps)
+npx @latentevals/agent-setup import --type=skill
+npx @latentevals/agent-setup import --type=mcp
+
+# Scan global locations (~/.claude/, ~/.cursor/, …)
 npx @latentevals/agent-setup import --global
 
 # Preview without writing
 npx @latentevals/agent-setup import --dry-run
 ```
 
-Decision logic per skill name found:
+**Skills source paths** — `.claude/skills/`, `.codex/skills/`, `.cursor/skills/`, `.gemini/skills/`, `.opencode/skills/` (plus the same under `$HOME` at global scope).
 
-- **Found in one source, not yet in `.agents/`** → copy
-- **Found in multiple sources with identical content** → copy once, note all sources
+**MCP source files** — `.mcp.json`, `.codex/config.toml`, `.cursor/mcp.json`, `.gemini/settings.json`, `opencode.json` (Claude uses `~/.claude.json` at global scope; OpenCode uses `$XDG_CONFIG_HOME/opencode/opencode.json` at global scope).
+
+Decision logic per skill or mcp name found:
+
+- **Found in one source, not yet in `.agents/`** → copy / write canonical
+- **Found in multiple sources with identical content** → import once, note all sources
 - **Found in multiple sources with differing content** → skip with conflict message; re-run with `--from <tool>` to disambiguate
 - **Already in `.agents/`, source matches** → silent no-op
 - **Already in `.agents/`, source differs** → skip unless `--force`
-- **Source is a symlink resolving into `.agents/skills/`** (e.g., one we created during a previous `install`) → silent no-op
+- **Skill source is a symlink resolving into `.agents/skills/`** (e.g., one we created during a previous `install`) → silent no-op
+- **MCP with an inline bearer secret** (`Authorization: Bearer literal-token`) → refuse; user must switch to an env-var reference and re-run
 
-`import` never writes to per-tool config or the lockfile. After running `import`, run `install` to propagate the imported skills out to the other harnesses.
+`import` never writes to per-tool config or the lockfile. After running `import`, run `install` to propagate the imported entries out to the other harnesses.
+
+**MCP auth reverse-translation table** — when reading bearer credentials from each source, `import` recognizes that tool's env-var syntax:
+
+| Source | Recognized bearer syntax |
+| --- | --- |
+| Claude / Gemini | `Bearer ${VAR}` or `Bearer $VAR` |
+| Cursor | `Bearer ${env:VAR}` |
+| OpenCode | `Bearer {env:VAR}` |
+| Codex | top-level `bearer_token_env_var = "VAR"` (header form also accepted as fallback) |
+
+Inline bearer values (anything that isn't a recognized env-var reference) are rejected — `import` will never canonicalize a plaintext credential. OAuth servers are not auto-detected; if you import an OAuth server, hand-edit `.agents/mcps/<n>.json` to set `"auth": "oauth"` afterwards.
 
 ### Common flags
 

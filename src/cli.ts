@@ -79,7 +79,7 @@ Commands:
 
 Options:
   --repo <source>        Source path or remote URL (default: ".") [install].
-  --type=skill|mcp       Narrow to one type (default: both) [install|uninstall].
+  --type=skill|mcp       Narrow to one type (default: both) [install|uninstall|import].
   --project              Project scope (default).
   --global               User-home scope.
   --tool=<a,b,...>       Comma-separated allowlist of adapters [install|uninstall].
@@ -282,6 +282,7 @@ export async function main(argv: string[]): Promise<number> {
       cwd,
       scope: parsed.scope,
       from: parsed.from ?? undefined,
+      type: parsed.type === "both" ? "both" : parsed.type,
       dryRun: parsed.dryRun,
       force: parsed.force,
     });
